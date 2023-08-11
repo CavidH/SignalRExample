@@ -1,7 +1,7 @@
 ﻿$(document).ready(() => {
     let connection = new signalR
         .HubConnectionBuilder()
-        .withUrl("https://localhost:44369/examplehub")
+        .withUrl("http://localhost:5296/examplehub")
         .build();
     //console.log(connection.connectionState);
     connection.start();

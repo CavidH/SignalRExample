@@ -38,6 +38,11 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-app.UseEndpoints(endPoints => { endPoints.MapHub<ExampleHub>("/examplehub"); });
+
+app.UseEndpoints(endPoints =>
+{
+    endPoints.MapHub<ExampleHub>("/examplehub");
+});
+
 
 app.Run();
