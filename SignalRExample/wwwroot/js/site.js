@@ -1,4 +1,21 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿$(document).ready(() => {
+    let connection = new signalR
+        .HubConnectionBuilder()
+        .withUrl("http://localhost:5296/examplehub")
+        .build();
+    //console.log(connection.connectionState);
+    connection.start();
+    $("#send-btn").click(() => {
+         let msg = $("#txtMessage").val();
+        connection.invoke("SendMessageAsync", msg)
+            .then(() =>console.log("Uğurlu qoşulma") )
+            .catch(err => console.log("Mesaj göndərilmədə problem yarandı\n",
+                err.toString()));
+    });
 
-// Write your JavaScript code.
+    connection.on("receiveMessage", message => {
+        $("#messages")
+            .append(`<li class="list-group-item">${message}</li>`);
+    })
+});
+          
