@@ -1,9 +1,19 @@
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using SignalRExample.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddCors(
+    options => options.AddDefaultPolicy(policy =>
+        policy.AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials()
+            .SetIsOriginAllowed(origin => true))
+);
 builder.Services.AddSignalR();
 var app = builder.Build();
 
@@ -22,14 +32,17 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+app.UseCors();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
+
 app.UseEndpoints(endPoints =>
 {
     endPoints.MapHub<ExampleHub>("/examplehub");
 });
+
 
 app.Run();
